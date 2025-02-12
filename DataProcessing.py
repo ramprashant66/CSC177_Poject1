@@ -3,18 +3,11 @@ Names: Prashant Ram
 Course: CSC 177
 Assignment: 1 - Data Preprocessing
 Professor: Chidella
-
 Details: This project deals with preprocessing data from a .csv file to ready it for
         data mining.
 '''
 
 import pandas
-import numpy
-
-'''
-This functions reads the data from a .csv file and makes columns for the data
-'''
-
 
 class DataPreprocessing:
     '''
@@ -24,7 +17,9 @@ class DataPreprocessing:
     def __init__(self):
         self.data = None
 
-# Make tables from the CSV file
+'''
+This function reads the data from a .csv file and makes columns for the data
+'''
 def makeTables(self):
      #formatting to display steps
     print("\n")
@@ -48,6 +43,9 @@ def makeTables(self):
     except Exception as e:
         print("An error occured while trying to read from the CSV file", e)
 
+'''
+This function counts the number of missing values in each column
+'''
 def missingValuesCount(self):
     #formatting to display steps
     print("\n")
@@ -69,7 +67,7 @@ def missingValuesCount(self):
             #add missing value columns to the list
             if total > 0:
                 missingColumns.append(col)
-        
+
         #finally display which columns had missing values
         print(f"\nThese columns had missing data: {missingColumns}")
     
@@ -77,7 +75,24 @@ def missingValuesCount(self):
     except Exception as e:
         print("umm. An error occurred while trying to replace the missing values..", e)
 
+'''
+This function drops all rows with missing data
+'''
+def dropMissingData(self):
+    # print the number of rows and columns
+    print(f'We have {self.data.shape[0]} [original] rows')
+    print(f'We have {self.data.shape[1]} [original] columns')
+     # print the first 5 rows of the data
+    print('\n', self.data.head())
+    
+    #drops all rows with no data
+    self.data = self.data.dropna()
 
+    print(f'We have {self.data.shape[0]} [original] rows')
+    print(f'We have {self.data.shape[1]} [original] columns')
+     # print the first 5 rows of the data
+    print('\n', self.data.head())
+    
  
 
 if __name__ == "__main__":
@@ -89,3 +104,7 @@ if __name__ == "__main__":
 
     #check for missing values
     missingValuesCount(preprocessedData)
+    
+    #drop all rows with missing data
+    dropMissingData(preprocessedData)
+   
