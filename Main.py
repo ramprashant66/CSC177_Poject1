@@ -26,7 +26,7 @@ def makeTables():
         print(f'We have {data.shape[1]} columns')
 
         # print the first 5 rows of the data
-        data.head()
+        print(data.head())
     except Exception as e:
         print("An error occured while trying to read from the CSV file", e)
 
