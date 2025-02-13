@@ -102,6 +102,7 @@ def PlotData(self):
     self.data.boxplot(figsize=(20,8))
     #display the data
     matPlot.show()
+    
 
 '''
 This function cleans the data by removing outliers
@@ -109,14 +110,29 @@ through Z-Score calculation (drops data > 3 or < -3)
 '''
 def cleanOutliers(self):
     #convert field to numeric so that they can be used in the zScore calculation
-    self.data['Value'] = pandas.to_numeric(self.data['Value'])
+    #calculate the mean of "Value" column
+    mean = self.data['Value'].mean()
+    #calculate the standard deviation of "Value" column
+    std = self.data['Value'].std()
     #calulate the zScore
-    zScore = (self.data- self.data.mean())/self.data.std()
-    print(f"\nNumer of rows with outliers: {zScore.shape[0]}")
+    zScore = (self.data['Value'] - mean) / std
 
-    #remove outliers
-    # zAfter = zScore.loc[((zScore > -3).sum(axis=1) == 9) & ((zScore < 3).sum(axis=1) == 9),:]
-    # print(f"\nNumer of rows without outliers: {zAfter.shape[0]}")
+    #show original data WITH outliers
+    print(f"\nNumer of rows WITH outliers: {zScore.shape[0]}")
+
+    # Create a mask for the all values in 'Values' that are outliers
+    #accounts for +- 3 using normal distribution
+    mask = zScore.abs() <= 3
+
+    # Keep only the rows that pass this condition
+    cleanData = self.data[mask]
+
+    # #remove outliers
+    self.data = cleanData
+    
+    print(f"Numer of rows without outliers: {self.data.shape[0]}")
+    print(f"We removed {zScore.shape[0] - self.data.shape[0]} number of outliers from the original data!\n")
+
  
 
 if __name__ == "__main__":
@@ -132,7 +148,8 @@ if __name__ == "__main__":
     #drop all rows with missing data
     dropMissingData(preprocessedData)
 
-    # cleanOutliers(preprocessedData)
+    #clean the data by removing outliers
+    cleanOutliers(preprocessedData)
 
     #Plots the current data from the dataframe
     PlotData(preprocessedData)
