@@ -136,9 +136,21 @@ def cleanOutliers(self):
     print(f"Numer of rows without outliers: {self.data.shape[0]}")
     print(f"We removed {zScore.shape[0] - self.data.shape[0]} number of outliers from the original data!\n")
 
-
+'''
+This function removes duplicates from the data
+'''
 def removeDuplicates(self):
     displayFunctionHeader("Removing Duplicates")
+
+    #catch how many duplicates were in the data frame
+    duplicatesFound = self.data.shape[0]
+    print(f"\nNumer of rows WITH duplicates: {self.data.shape[0]}")
+
+    #drop duplicates
+    self.data = self.data.drop_duplicates(keep = False)
+
+    print(f"\nNumer of rows WITHOUT duplicates: {self.data.shape[0]}")
+    print(f"\nThere were {duplicatesFound - self.data.shape[0]} duplicates in the data frame")
     
 
  
