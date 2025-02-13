@@ -18,15 +18,18 @@ class DataPreprocessing:
     def __init__(self):
         self.data = None
 
+def displayFunctionHeader(header):
+    print("\n")
+    print("." * 40, '\n', "." * 40)
+    print(f" " * 5, header, " " * 5)
+    print("." * 40, '\n', "." * 40)
+
 '''
 This function reads the data from a .csv file and makes columns for the data
 '''
 def makeTables(self):
-     #formatting to display steps
-    print("\n")
-    print("." * 40, '\n', "." * 40)
-    print(" " * 5, "Making Tables From CSV", " " * 5)
-    print("." * 40, '\n', "." * 40)
+    #formatting to display steps
+    displayFunctionHeader("Making Tables From CSV")
 
     try:
         # import the data from the .csv file. "data" = dataframe
@@ -49,10 +52,7 @@ This function counts the number of missing values in each column
 '''
 def missingValuesCount(self):
     #formatting to display steps
-    print("\n")
-    print("." * 40, '\n', "." * 40)
-    print(" " * 5, "Missing Values In Each Column", " " * 5)
-    print("." * 40, '\n', "." * 40)
+    displayFunctionHeader("Missing Values In Each Column")
 
     #list to hold the columns with missing values
     missingColumns = []
@@ -80,6 +80,8 @@ def missingValuesCount(self):
 This function drops all rows with missing data
 '''
 def dropMissingData(self):
+    displayFunctionHeader("Dropping Rows With Missing Data")
+
     # print the number of rows and columns
     print(f'We have {self.data.shape[0]} [original] rows')
     print(f'We have {self.data.shape[1]} [original] columns')
@@ -102,13 +104,14 @@ def PlotData(self):
     self.data.boxplot(figsize=(20,8))
     #display the data
     matPlot.show()
-    
+
 
 '''
 This function cleans the data by removing outliers
 through Z-Score calculation (drops data > 3 or < -3)
 '''
 def cleanOutliers(self):
+    displayFunctionHeader("Cleaning Outliers")
     #convert field to numeric so that they can be used in the zScore calculation
     #calculate the mean of "Value" column
     mean = self.data['Value'].mean()
@@ -133,6 +136,11 @@ def cleanOutliers(self):
     print(f"Numer of rows without outliers: {self.data.shape[0]}")
     print(f"We removed {zScore.shape[0] - self.data.shape[0]} number of outliers from the original data!\n")
 
+
+def removeDuplicates(self):
+    displayFunctionHeader("Removing Duplicates")
+    
+
  
 
 if __name__ == "__main__":
@@ -150,6 +158,9 @@ if __name__ == "__main__":
 
     #clean the data by removing outliers
     cleanOutliers(preprocessedData)
+
+    #remove duplicates
+    removeDuplicates(preprocessedData)
 
     #Plots the current data from the dataframe
     PlotData(preprocessedData)
