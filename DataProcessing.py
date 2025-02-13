@@ -8,6 +8,7 @@ Details: This project deals with preprocessing data from a .csv file to ready it
 '''
 
 import pandas
+import matplotlib.pyplot as matPlot
 
 class DataPreprocessing:
     '''
@@ -92,7 +93,30 @@ def dropMissingData(self):
     print(f'We have {self.data.shape[1]} [original] columns')
      # print the first 5 rows of the data
     print('\n', self.data.head())
-    
+
+'''
+Plots the data from the current dataframe
+'''
+def PlotData(self):
+    #choose figure size for the plot area
+    self.data.boxplot(figsize=(20,8))
+    #display the data
+    matPlot.show()
+
+'''
+This function cleans the data by removing outliers
+through Z-Score calculation (drops data > 3 or < -3)
+'''
+def cleanOutliers(self):
+    #convert field to numeric so that they can be used in the zScore calculation
+    self.data['Value'] = pandas.to_numeric(self.data['Value'])
+    #calulate the zScore
+    zScore = (self.data- self.data.mean())/self.data.std()
+    print(f"\nNumer of rows with outliers: {zScore.shape[0]}")
+
+    #remove outliers
+    # zAfter = zScore.loc[((zScore > -3).sum(axis=1) == 9) & ((zScore < 3).sum(axis=1) == 9),:]
+    # print(f"\nNumer of rows without outliers: {zAfter.shape[0]}")
  
 
 if __name__ == "__main__":
@@ -107,4 +131,9 @@ if __name__ == "__main__":
     
     #drop all rows with missing data
     dropMissingData(preprocessedData)
+
+    # cleanOutliers(preprocessedData)
+
+    #Plots the current data from the dataframe
+    PlotData(preprocessedData)
    
