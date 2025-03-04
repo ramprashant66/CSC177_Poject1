@@ -103,12 +103,32 @@ Plots the data from the current dataframe
 '''
 def PlotData(self):
 
+    #plot the Gender column
+    matPlot.subplot(2,2,2)
+    seaborn.countplot(x='Gender', data=self.data, palette='viridis', legend=False)
+    matPlot.title('Gender of Patient')
+
+    #plot the Smoking Status column
+    matPlot.subplot(2,2,3)
+    seaborn.countplot(x='Smoking Status', data=self.data, palette='viridis', legend=False)
+    matPlot.title('Smoking Status of Patient')
+
+    #plot the Recovered column
+    matPlot.subplot(2,2,4)
+    seaborn.countplot(x='Recovered', data=self.data, palette='viridis', legend=False)
+    matPlot.title('Did the Patient Recover?')
+
+    #make the charts fit nicely together in one window
+    matPlot.tight_layout()
+
+
     #choose figure size for the plot area
     matPlot.figure(figsize=(12, 6))
     seaborn.boxplot(data=self.data[['Age', 'Lung Capacity', 'Hospital Visits']])
     matPlot.title("Boxplot of Numeric Columns")
     #display the data
     matPlot.show()
+
 
 '''
 Convert Categorical columns to Numeric
@@ -231,10 +251,8 @@ if __name__ == "__main__":
     #convert categorical columns to numeric
     convertCategoricalToNumeric(preprocessedData)
 
-    #clean the data by removing outliers
+    #clean the data by removing outliers (do we really this?)
     # cleanOutliers(preprocessedData)
-
-   
 
     # Plots the current data from the dataframe
     PlotData(preprocessedData)
