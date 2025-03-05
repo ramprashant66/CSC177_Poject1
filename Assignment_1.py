@@ -99,29 +99,55 @@ def dropMissingData(self):
     print('\n', self.data.head())
 
 '''
-Plots the data from the current dataframe
+Plots the data from the current dataframe for the individual columns
 '''
-def PlotData(self):
+def individualPlot(self):
 
     #plot the Gender column
     matPlot.subplot(2,2,2)
-    seaborn.countplot(x='Gender', data=self.data, palette='viridis', legend=False)
+    seaborn.countplot(x='Gender', data=self.data, hue='Gender', palette='viridis', legend=False)
     matPlot.title('Gender of Patient')
 
     #plot the Smoking Status column
     matPlot.subplot(2,2,3)
-    seaborn.countplot(x='Smoking Status', data=self.data, palette='viridis', legend=False)
+    seaborn.countplot(x='Smoking Status', data=self.data, hue='Smoking Status', palette='viridis', legend=False)
     matPlot.title('Smoking Status of Patient')
 
     #plot the Recovered column
     matPlot.subplot(2,2,4)
-    seaborn.countplot(x='Recovered', data=self.data, palette='viridis', legend=False)
+    seaborn.countplot(x='Recovered', data=self.data, hue='Recovered', palette='viridis', legend=False)
     matPlot.title('Did the Patient Recover?')
 
     #make the charts fit nicely together in one window
     matPlot.tight_layout()
 
+    '''
+    Histogram plot of numerical columns
+    '''
+    # Plot histograms for numerical columns
+    matPlot.figure(figsize=(15, 5))
 
+    # Age
+    matPlot.subplot(1, 3, 1)
+    seaborn.histplot(self.data['Age'], kde=True, color='red')
+    matPlot.title('Histogram of Age of Patients')
+
+    # Lung Capacity
+    matPlot.subplot(1, 3, 2)
+    seaborn.histplot(self.data['Lung Capacity'], kde=True, color='green')
+    matPlot.title('Histogram of Lung Capacity')
+
+    # Hospital Visits
+    matPlot.subplot(1, 3, 3)
+    seaborn.histplot(self.data['Hospital Visits'], kde=True, color='yellow')
+    matPlot.title('Historgram of Hospital Visits')
+
+    matPlot.tight_layout()
+    matPlot.show()
+
+    '''
+    Boxplot of numerical columns
+    '''
     #choose figure size for the plot area
     matPlot.figure(figsize=(12, 6))
     seaborn.boxplot(data=self.data[['Age', 'Lung Capacity', 'Hospital Visits']])
@@ -129,6 +155,12 @@ def PlotData(self):
     #display the data
     matPlot.show()
 
+'''
+Plots the data from the current dataframe for the relations between columns
+'''
+def relationsPlot(self):
+    #plot the relation between Age and Lung Capacity
+    matPlot.figure(figsize=(10, 5))
 
 '''
 Convert Categorical columns to Numeric
@@ -229,7 +261,15 @@ def removeDuplicates(self):
 
     print(f"\nNumer of rows WITHOUT duplicates: {self.data.shape[0]}")
     print(f"\nThere were {duplicatesFound - self.data.shape[0]} duplicates in the data frame")
+
+'''
+This function splits the data into training and testing data
+'''
+def splitData(self):
+    displayFunctionHeader("Splitting Data into the training and testing models")
+
     
+
 
 
 if __name__ == "__main__":
@@ -254,6 +294,9 @@ if __name__ == "__main__":
     #clean the data by removing outliers (do we really this?)
     # cleanOutliers(preprocessedData)
 
-    # Plots the current data from the dataframe
-    PlotData(preprocessedData)
+    # Plots the current data from the dataframe for individual columns
+    individualPlot(preprocessedData)
+    # Plots the current data from the dataframe for relations between columns
+    relationsPlot(preprocessedData)
    
+   #splitData(preprocessedData)
